@@ -2,13 +2,9 @@
 
 var _ = require('lodash');
 var tartan = require('tartan');
-var canvas = require('./canvas');
-var houseOfTartan = require('./house-of-tartan');
 
 _.extend(module.exports, require('./@package'));
 
-module.exports.canvas = canvas;
-module.exports.houseOfTartan = houseOfTartan;
+module.exports.render = require('./render');
 
-tartan.render.canvas = canvas;
-tartan.render.houseOfTartan = houseOfTartan;
+_.extend(tartan.render, module.exports.render);
