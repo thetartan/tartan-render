@@ -261,13 +261,23 @@ function factory(sett, options) {
     };
     hooks.configure(canvas, options);
 
+    var shouldClearCanvas = false;
+    // When rendering infinite image, do not clear
+    if (!repeat) {
+      // Clear only if image will be smaller that canvas
+      shouldClearCanvas = (warp.lengthOfPattern < options.width) ||
+        (weft.lengthOfPattern < options.height);
+    }
+
     if ((options.width > 0) && (options.height > 0)) {
       var context = canvas.getContext('2d');
       hooks.render(context, options, false);
 
-      hooks.clear(context, options, false);
-      options = clearCanvas(context, options);
-      hooks.clear(context, options, true);
+      if (shouldClearCanvas) {
+        hooks.clear(context, options, false);
+        options = clearCanvas(context, options);
+        hooks.clear(context, options, true);
+      }
 
       hooks.renderWarp(context, options, false);
       renderWarp(context, options);
